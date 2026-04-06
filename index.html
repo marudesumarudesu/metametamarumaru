@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Metaverse Market Plaza</title>
+  <meta
+    name="description"
+    content="Walkable AI metaverse lobby with a central live market information board."
+  >
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=Oxanium:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="app">
+    <div id="stage" aria-label="3D market plaza"></div>
+
+    <div class="hud">
+      <section class="hud-panel hero-panel">
+        <p class="eyebrow">AI MARKET PLAZA</p>
+        <h1>Walkable Lobby Prototype</h1>
+        <p class="panel-copy">
+          Drag to look around. Move with <strong>W A S D</strong> or arrow keys.
+          The giant live board stands in the center of the plaza, and visible
+          avatars already occupy the gathering area.
+        </p>
+
+        <div class="action-row">
+          <button class="hud-button" id="shareRoom" type="button">Share</button>
+          <button class="hud-button" id="resetView" type="button">Reset View</button>
+          <button class="hud-button accent" id="toggleFullscreen" type="button">Fullscreen</button>
+        </div>
+
+        <div class="status-row">
+          <span class="status-pill" id="liveStatus">
+            <span class="status-dot"></span>
+            <span id="onlineText">Feed online</span>
+          </span>
+          <span class="status-pill" id="lastSync">Syncing market feeds...</span>
+        </div>
+      </section>
+
+      <section class="hud-panel right-panel">
+        <p class="eyebrow">LOBBY STATUS</p>
+        <h2>Market sessions</h2>
+        <div id="sessionGrid" class="data-grid" aria-live="polite"></div>
+      </section>
+
+      <section class="hud-panel bottom-left">
+        <p class="eyebrow">WORLD CLOCKS</p>
+        <h2>Plaza time mesh</h2>
+        <div id="clockGrid" class="data-grid" aria-live="polite"></div>
+      </section>
+
+      <section class="hud-panel bottom-right">
+        <p class="eyebrow">ROOM NOTES</p>
+        <h2>What this version adds</h2>
+        <ul id="signalStream" class="signal-list" aria-live="polite"></ul>
+      </section>
+    </div>
+
+    <div class="mobile-controls" aria-label="Mobile movement controls">
+      <button class="control-button" data-action="forward" type="button">Forward</button>
+      <div class="control-row">
+        <button class="control-button" data-action="left" type="button">Left</button>
+        <button class="control-button" data-action="backward" type="button">Back</button>
+        <button class="control-button" data-action="right" type="button">Right</button>
+      </div>
+    </div>
+
+    <div id="board3d" class="board-3d board-preload">
+      <div class="board-surface">
+        <div class="board-header">
+          <div>
+            <p class="eyebrow">CENTRAL INFORMATION BOARD</p>
+            <h2>Global Equities and FX</h2>
+          </div>
+          <div class="board-pills">
+            <span class="board-pill" id="boardPulse">Lobby focus: Global macro view</span>
+            <span class="board-pill">Shared screen for all visitors</span>
+          </div>
+        </div>
+
+        <div class="board-module">
+          <div class="module-head">
+            <span>Major indices and FX tape</span>
+            <span class="module-tag">Live</span>
+          </div>
+          <div class="tradingview-widget-container board-widget-short">
+            <div class="tradingview-widget-container__widget"></div>
+            <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
+              {
+                "symbols": [
+                  { "proName": "FOREXCOM:SPXUSD", "title": "S&P 500" },
+                  { "proName": "FOREXCOM:NSXUSD", "title": "NASDAQ 100" },
+                  { "proName": "INDEX:NKY", "title": "Nikkei 225" },
+                  { "proName": "INDEX:DEU40", "title": "DAX" },
+                  { "proName": "INDEX:UKX", "title": "FTSE 100" },
+                  { "proName": "FX:USDJPY", "title": "USD/JPY" },
+                  { "proName": "FX:EURUSD", "title": "EUR/USD" },
+                  { "proName": "FX:GBPUSD", "title": "GBP/USD" }
+                ],
+                "showSymbolLogo": true,
+                "isTransparent": true,
+                "displayMode": "adaptive",
+                "colorTheme": "dark",
+                "locale": "ja"
+              }
+            </script>
+          </div>
+        </div>
+
+        <div class="board-grid">
+          <section class="board-module">
+            <div class="module-head">
+              <span>World market overview</span>
+              <span class="module-tag">Stocks</span>
+            </div>
+            <div class="tradingview-widget-container board-widget-tall">
+              <div class="tradingview-widget-container__widget"></div>
+              <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js" async>
+                {
+                  "colorTheme": "dark",
+                  "dateRange": "12M",
+                  "showChart": true,
+                  "locale": "ja",
+                  "largeChartUrl": "",
+                  "isTransparent": true,
+                  "showSymbolLogo": true,
+                  "showFloatingTooltip": false,
+                  "width": "100%",
+                  "height": "100%",
+                  "plotLineColorGrowing": "rgba(73, 255, 234, 1)",
+                  "plotLineColorFalling": "rgba(255, 124, 167, 1)",
+                  "gridLineColor": "rgba(255, 255, 255, 0.06)",
+                  "scaleFontColor": "rgba(219, 238, 255, 0.72)",
+                  "belowLineFillColorGrowing": "rgba(73, 255, 234, 0.16)",
+                  "belowLineFillColorFalling": "rgba(255, 124, 167, 0.12)",
+                  "belowLineFillColorGrowingBottom": "rgba(73, 255, 234, 0.01)",
+                  "belowLineFillColorFallingBottom": "rgba(255, 124, 167, 0.01)",
+                  "symbolActiveColor": "rgba(255, 193, 94, 0.18)",
+                  "tabs": [
+                    {
+                      "title": "Americas",
+                      "symbols": [
+                        { "s": "FOREXCOM:SPXUSD", "d": "S&P 500" },
+                        { "s": "FOREXCOM:NSXUSD", "d": "NASDAQ 100" },
+                        { "s": "CME_MINI:YM1!", "d": "Dow Futures" },
+                        { "s": "AMEX:SPY", "d": "SPY ETF" }
+                      ],
+                      "originalTitle": "Americas"
+                    },
+                    {
+                      "title": "Europe",
+                      "symbols": [
+                        { "s": "INDEX:DEU40", "d": "DAX" },
+                        { "s": "INDEX:UKX", "d": "FTSE 100" },
+                        { "s": "INDEX:CAC40", "d": "CAC 40" },
+                        { "s": "INDEX:SMI", "d": "SMI" }
+                      ],
+                      "originalTitle": "Europe"
+                    },
+                    {
+                      "title": "Asia",
+                      "symbols": [
+                        { "s": "INDEX:NKY", "d": "Nikkei 225" },
+                        { "s": "INDEX:HSI", "d": "Hang Seng" },
+                        { "s": "BSE:SENSEX", "d": "Sensex" },
+                        { "s": "TVC:NI225", "d": "JP 225 Spot" }
+                      ],
+                      "originalTitle": "Asia"
+                    }
+                  ]
+                }
+              </script>
+            </div>
+          </section>
+
+          <section class="board-module">
+            <div class="module-head">
+              <span>FX cross matrix</span>
+              <span class="module-tag">Forex</span>
+            </div>
+            <div class="tradingview-widget-container board-widget-tall">
+              <div class="tradingview-widget-container__widget"></div>
+              <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-forex-cross-rates.js" async>
+                {
+                  "width": "100%",
+                  "height": "100%",
+                  "currencies": [
+                    "USD",
+                    "JPY",
+                    "EUR",
+                    "GBP",
+                    "AUD",
+                    "CAD",
+                    "CHF",
+                    "NZD"
+                  ],
+                  "isTransparent": true,
+                  "colorTheme": "dark",
+                  "locale": "ja",
+                  "backgroundColor": "rgba(6, 13, 28, 0)"
+                }
+              </script>
+            </div>
+          </section>
+        </div>
+
+        <div class="board-footer">
+          <span class="footer-chip">Walkable plaza with surrounding arches</span>
+          <span class="footer-chip">Visible avatars gathered around the board</span>
+          <span class="footer-chip">Static hosting friendly for GitHub Pages</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
