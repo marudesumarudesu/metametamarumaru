@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Metaverse Market Lobby</title>
+  <meta
+    name="description"
+    content="AI world lobby with a central live market information board, plaza space, and global market overview."
+  >
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=Oxanium:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="app.js"></script>
+</head>
+<body data-scene="aurora">
+  <div class="background-noise" aria-hidden="true"></div>
+  <div class="orb orb-a" aria-hidden="true"></div>
+  <div class="orb orb-b" aria-hidden="true"></div>
+  <div class="orb orb-c" aria-hidden="true"></div>
+
+  <div class="app-shell">
+    <header class="top-bar glass-panel">
+      <div>
+        <p class="eyebrow">SYNTHETIC EXCHANGE LOBBY</p>
+        <h1>AI Metaverse Market Lobby</h1>
+        <p class="sub-copy">
+          Central plaza design for a future avatar gathering space.
+          Everyone looks toward one giant live information board in the middle.
+        </p>
+      </div>
+
+      <div class="toolbar">
+        <div class="mini-status" id="onlineBadge">
+          <span class="status-dot"></span>
+          <span id="onlineText">Feed online</span>
+        </div>
+        <button class="toolbar-button" id="shareRoom" type="button">Share Room</button>
+        <button class="toolbar-button accent" id="toggleFullscreen" type="button">Fullscreen</button>
+      </div>
+    </header>
+
+    <main class="layout">
+      <aside class="side-column">
+        <section class="glass-panel panel">
+          <p class="eyebrow">LOBBY GUIDE</p>
+          <h2>Central plaza overview</h2>
+          <p class="panel-copy">
+            The lobby is built as a gathering square first. The avatar layer can
+            plug into the dock pads later without changing the main structure.
+          </p>
+          <div class="session-grid" id="sessionGrid" aria-live="polite"></div>
+        </section>
+
+        <section class="glass-panel panel">
+          <p class="eyebrow">AMBIENT FEED</p>
+          <h2>Live room notes</h2>
+          <ul class="signal-list" id="signalStream" aria-live="polite"></ul>
+        </section>
+      </aside>
+
+      <section class="scene-shell">
+        <div class="ceiling-rings" aria-hidden="true">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+
+        <div class="beam" aria-hidden="true"></div>
+
+        <div class="lobby-arches" aria-hidden="true">
+          <span class="arch arch-left"></span>
+          <span class="arch arch-center"></span>
+          <span class="arch arch-right"></span>
+        </div>
+
+        <div class="zone-beacons" aria-hidden="true">
+          <div class="zone-placard zone-a">North Gate</div>
+          <div class="zone-placard zone-b">Strategy Deck</div>
+          <div class="zone-placard zone-c">FX Terrace</div>
+          <div class="zone-placard zone-d">Community Bay</div>
+        </div>
+
+        <section class="main-board glass-panel">
+          <div class="board-header">
+            <div>
+              <p class="eyebrow">CENTRAL INFORMATION BOARD</p>
+              <h2>Global Equity + FX Board</h2>
+            </div>
+
+            <div class="board-meta">
+              <span class="meta-pill" id="lastSync">Syncing market feeds...</span>
+              <span class="meta-pill" id="marketPulse">Lobby scan: Loading market state</span>
+            </div>
+          </div>
+
+          <div class="ticker-shell">
+            <div class="widget-label">
+              <span>Major Indices & FX Tape</span>
+              <span class="widget-note">Live</span>
+            </div>
+            <div class="tradingview-widget-container widget-frame">
+              <div class="tradingview-widget-container__widget"></div>
+              <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
+                {
+                  "symbols": [
+                    { "proName": "FOREXCOM:SPXUSD", "title": "S&P 500" },
+                    { "proName": "FOREXCOM:NSXUSD", "title": "NASDAQ 100" },
+                    { "proName": "INDEX:NKY", "title": "Nikkei 225" },
+                    { "proName": "INDEX:DEU40", "title": "DAX" },
+                    { "proName": "INDEX:UKX", "title": "FTSE 100" },
+                    { "proName": "FX:USDJPY", "title": "USD/JPY" },
+                    { "proName": "FX:EURUSD", "title": "EUR/USD" },
+                    { "proName": "FX:GBPUSD", "title": "GBP/USD" }
+                  ],
+                  "showSymbolLogo": true,
+                  "isTransparent": true,
+                  "displayMode": "adaptive",
+                  "colorTheme": "dark",
+                  "locale": "ja"
+                }
+              </script>
+            </div>
+          </div>
+
+          <div class="board-grid">
+            <article class="widget-card">
+              <div class="widget-label">
+                <span>World Market Overview</span>
+                <span class="widget-note">Stocks</span>
+              </div>
+              <div class="tradingview-widget-container widget-frame tall">
+                <div class="tradingview-widget-container__widget"></div>
+                <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js" async>
+                  {
+                    "colorTheme": "dark",
+                    "dateRange": "12M",
+                    "showChart": true,
+                    "locale": "ja",
+                    "largeChartUrl": "",
+                    "isTransparent": true,
+                    "showSymbolLogo": true,
+                    "showFloatingTooltip": false,
+                    "width": "100%",
+                    "height": "100%",
+                    "plotLineColorGrowing": "rgba(42, 255, 240, 1)",
+                    "plotLineColorFalling": "rgba(255, 105, 142, 1)",
+                    "gridLineColor": "rgba(255, 255, 255, 0.06)",
+                    "scaleFontColor": "rgba(229, 244, 255, 0.66)",
+                    "belowLineFillColorGrowing": "rgba(42, 255, 240, 0.18)",
+                    "belowLineFillColorFalling": "rgba(255, 105, 142, 0.12)",
+                    "belowLineFillColorGrowingBottom": "rgba(42, 255, 240, 0.01)",
+                    "belowLineFillColorFallingBottom": "rgba(255, 105, 142, 0.01)",
+                    "symbolActiveColor": "rgba(255, 180, 76, 0.18)",
+                    "tabs": [
+                      {
+                        "title": "Americas",
+                        "symbols": [
+                          { "s": "FOREXCOM:SPXUSD", "d": "S&P 500" },
+                          { "s": "FOREXCOM:NSXUSD", "d": "NASDAQ 100" },
+                          { "s": "CME_MINI:YM1!", "d": "Dow Futures" },
+                          { "s": "AMEX:SPY", "d": "SPY ETF" }
+                        ],
+                        "originalTitle": "Americas"
+                      },
+                      {
+                        "title": "Europe",
+                        "symbols": [
+                          { "s": "INDEX:DEU40", "d": "DAX" },
+                          { "s": "INDEX:UKX", "d": "FTSE 100" },
+                          { "s": "INDEX:CAC40", "d": "CAC 40" },
+                          { "s": "INDEX:SMI", "d": "SMI" }
+                        ],
+                        "originalTitle": "Europe"
+                      },
+                      {
+                        "title": "Asia",
+                        "symbols": [
+                          { "s": "INDEX:NKY", "d": "Nikkei 225" },
+                          { "s": "INDEX:HSI", "d": "Hang Seng" },
+                          { "s": "BSE:SENSEX", "d": "Sensex" },
+                          { "s": "TVC:NI225", "d": "JP 225 Spot" }
+                        ],
+                        "originalTitle": "Asia"
+                      }
+                    ]
+                  }
+                </script>
+              </div>
+            </article>
+
+            <article class="widget-card">
+              <div class="widget-label">
+                <span>FX Cross Matrix</span>
+                <span class="widget-note">Forex</span>
+              </div>
+              <div class="tradingview-widget-container widget-frame tall">
+                <div class="tradingview-widget-container__widget"></div>
+                <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-forex-cross-rates.js" async>
+                  {
+                    "width": "100%",
+                    "height": "100%",
+                    "currencies": [
+                      "USD",
+                      "JPY",
+                      "EUR",
+                      "GBP",
+                      "AUD",
+                      "CAD",
+                      "CHF",
+                      "NZD"
+                    ],
+                    "isTransparent": true,
+                    "colorTheme": "dark",
+                    "locale": "ja",
+                    "backgroundColor": "rgba(11, 18, 36, 0)"
+                  }
+                </script>
+              </div>
+            </article>
+          </div>
+
+          <div class="board-footer">
+            <div class="footer-chip">
+              <span class="footer-title">Lobby Theme</span>
+              <strong id="sceneName">Aurora Relay</strong>
+            </div>
+            <div class="footer-chip">
+              <span class="footer-title">Avatar Layer</span>
+              <strong id="dockStatus">8 dock pads ready</strong>
+            </div>
+            <div class="footer-chip">
+              <span class="footer-title">Data Source</span>
+              <strong>TradingView widgets / internet connection required</strong>
+            </div>
+          </div>
+        </section>
+
+        <div class="plaza-base" aria-hidden="true">
+          <div class="plaza-disc">
+            <span class="disc-ring ring-a"></span>
+            <span class="disc-ring ring-b"></span>
+            <span class="disc-ring ring-c"></span>
+          </div>
+          <div class="walkway walkway-north"></div>
+          <div class="walkway walkway-south"></div>
+          <div class="walkway walkway-east"></div>
+          <div class="walkway walkway-west"></div>
+        </div>
+
+        <div class="dock-ring" id="dockRing" aria-hidden="true"></div>
+        <div class="floor-grid" aria-hidden="true"></div>
+      </section>
+
+      <aside class="side-column">
+        <section class="glass-panel panel">
+          <p class="eyebrow">WORLD CLOCKS</p>
+          <h2>Market time mesh</h2>
+          <div class="clock-grid" id="clockGrid" aria-live="polite"></div>
+        </section>
+
+        <section class="glass-panel panel">
+          <p class="eyebrow">LOBBY ZONES</p>
+          <h2>Future gathering points</h2>
+          <ul class="feature-list">
+            <li>North Gate for main event arrivals</li>
+            <li>Strategy Deck for market briefings</li>
+            <li>FX Terrace for currency watchers</li>
+            <li>Community Bay for casual meetup flow</li>
+          </ul>
+        </section>
+
+        <section class="glass-panel panel">
+          <p class="eyebrow">DECK CONTROLS</p>
+          <h2>Space theme</h2>
+          <div class="mode-grid">
+            <button class="mode-button active" data-scene-option="aurora" type="button">Aurora Relay</button>
+            <button class="mode-button" data-scene-option="sunrise" type="button">Sunrise Pulse</button>
+            <button class="mode-button" data-scene-option="abyss" type="button">Abyss Network</button>
+          </div>
+          <p class="panel-copy">
+            Open the same URL on other devices and everyone can stand in the
+            same virtual lobby while watching the central board.
+          </p>
+        </section>
+      </aside>
+    </main>
+  </div>
+</body>
+</html>
